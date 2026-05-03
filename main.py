@@ -10,7 +10,32 @@ import string
 import json
 from datetime import datetime
 
+# Загрузка сохраненных паролей
+def load_passwords_list():
+    try:
+        with open("password_generator.json", "r", encoding="utf-8") as file:
+            return json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return []
 
+# Сохранение истории генераций
+def save_password_list(passw_list):
+    try:
+        with open("password_generator.json", "w", encoding="utf-8") as file:
+            json.dump(passw_list, file, ensure_ascii=False, indent=4)
+            print("Задачи успешно сохранены в password_generator.json")
+    except PermissionError:
+        print("Нет прав на запись файла password_generator.json. Проверьте права доступа к директории.")
+    except FileNotFoundError:
+        print("Файл password_generator.json не найден. Будет создан новый.")
+    except TypeError as e:
+        print(f"Неподдерживаемый тип данных в задачах: {e}")
+    except OSError as e:
+        print(f"Ошибка файловой системы: {e}")
+    except Exception as e:
+        print(f"Неожиданная ошибка: {e}")
+
+# Генерация и отображения паролей
 def generate_password():
     print('Good work!!!')
 
@@ -78,5 +103,8 @@ scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 # Связываем скроллбар и Listbox
 lb.config(yscrollcommand=scrollbar.set)
 scrollbar.config(command=lb.yview)
+
+# Загружаем в историю генераций
+passwords = load_passwords_list()
 
 root.mainloop()
