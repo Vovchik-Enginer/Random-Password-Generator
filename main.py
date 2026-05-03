@@ -37,7 +37,41 @@ def save_password_list(passw_list):
 
 # Генерация и отображения паролей
 def generate_password():
-    print('Good work!!!')
+    # Получаем длину пароля из переменной, привязанной к ползунку
+    length = length_pasw.get()
+    
+    # Формируем набор символов на основе чекбоксов
+    all_chars = (
+        (string.ascii_lowercase if lowercase_var.get() else '') +
+        (string.ascii_uppercase if uppercase_var.get() else '') +
+        (string.digits if digits_var.get() else '') +
+        ("!@#$%^&*()_+-={}|;:,.<>?" if special_var.get() else '') )
+    
+    # Проверяем, что хотя бы один тип символов выбран
+    if not all_chars:
+        result_label.config(text="Ошибка: выберите хотя бы один тип символов!", fg="red")
+        return
+    
+    # Генерируем пароль и время его создания
+    password = ''.join(random.choices(all_chars, k=length))
+    current_time = datetime.now().strftime("%H:%M:%S")
+    passwords.append({'password': password, 'timestamp': current_time, 'length': len(password)})
+
+    # Отображаем и сохраняем результат в файл
+    result_label.config(text=f"Сгенерированный пароль:\n {password}", fg="blue")   
+    save_password_list(passw_list=passwords)
+    update_history_listbox() # Обновляем историю в Listbox
+
+# Обновляет историю в Listbox
+def update_history_listbox():
+    # Очистка Listbox
+    lb.delete(0, tk.END)
+    if not passwords:
+        lb.insert(tk.END, "История пуста")
+    else:
+        for password in passwords:
+            line = f"Пароль: {password['password']} ({password['length']} симв.) — {password['timestamp']}"
+            lb.insert(tk.END, line)
 
 # Главное окно
 root = tk.Tk()
