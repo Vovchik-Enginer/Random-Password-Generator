@@ -12,7 +12,7 @@ from datetime import datetime
 
 
 def generate_password():
-    pass
+    print('Good work!!!')
 
 # Главное окно
 root = tk.Tk()
@@ -55,5 +55,28 @@ pasword_length_scale.pack(pady=5, padx=20)
 button_pasw = tk.Button(root, text='Сгенерировать пароль!', font=("Arial", 12, "bold"), fg='red', command=generate_password)
 button_pasw.pack(pady=20)
 
-root.mainloop()
+# Метка для результата
+result_label = tk.Label(root, text=" ", font=("Arial", 12, "bold"), bg="#b8e9b6")
+result_label.pack(pady=5)
 
+# Метка для истории генераций
+result_history = tk.Label(root, text="История генераций:", font=("Arial", 12, "bold"), bg="#b8e9b6")
+result_history.pack(pady=5)
+
+# Фрейм для истории с скроллбаром
+frame = tk.Frame(root, bg="#90d6f7")
+frame.pack(padx=40, pady=20, fill='both', expand=True)
+
+# Listbox для истории
+lb = tk.Listbox(frame, height=10, width=40, bg='#90d6f7', fg="#030303", selectmode=tk.SINGLE, font=("Arial", 8))
+lb.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+# Скроллбар
+scrollbar = tk.Scrollbar(frame, orient=tk.VERTICAL)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+# Связываем скроллбар и Listbox
+lb.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=lb.yview)
+
+root.mainloop()
