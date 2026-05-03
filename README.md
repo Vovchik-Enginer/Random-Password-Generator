@@ -1,5 +1,4 @@
-# Название программы
-Random Password Generator (Генератор случайных паролей)
+# Random Password Generator
 
 Автор: Ярослав Аннушкин
 Класс: 9К
